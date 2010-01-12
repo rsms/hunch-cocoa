@@ -18,7 +18,7 @@
  *     }];
  *
  */
-typedef void (^HUWebServiceProxyCallClosure)(id parsedResponseObject, NSError *error);
+typedef void (^HUWebServiceProxyCallBlock)(id parsedResponseObject, NSError *error);
 
 
 @interface HUWebServiceProxy : NSObject {
@@ -138,13 +138,13 @@ typedef void (^HUWebServiceProxyCallClosure)(id parsedResponseObject, NSError *e
  */
 -(ASIHTTPRequest *)call:(NSString *)method
 									 args:(id)args
-								closure:(HUWebServiceProxyCallClosure)b;
+									 block:(HUWebServiceProxyCallBlock)b;
 
 /**
  * Call a remote method without any arguments and dispatch the call immediately.
  */
 -(ASIHTTPRequest *)call:(NSString *)method
-								closure:(HUWebServiceProxyCallClosure)b;
+                  block:(HUWebServiceProxyCallBlock)b;
 
 /**
  * Call a remote method.
@@ -155,7 +155,7 @@ typedef void (^HUWebServiceProxyCallClosure)(id parsedResponseObject, NSError *e
  */
 -(ASIHTTPRequest *)call:(NSString *)method
 									 args:(id)args
-								closure:(HUWebServiceProxyCallClosure)b
+								  block:(HUWebServiceProxyCallBlock)b
 							autostart:(BOOL)autostart;
 
 #pragma mark -

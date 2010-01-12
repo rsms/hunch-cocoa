@@ -36,18 +36,18 @@
 }
 
 - (void)requestFinished:(ASIHTTPRequest *)r withParsedObject:(NSObject *)obj {
-	HUWebServiceProxyCallClosure closure;
-	if (r.userInfo && (closure = [r.userInfo objectForKey:@"closure"])) {
-		closure(obj, nil);
-		[closure release];
+	HUWebServiceProxyCallBlock block;
+	if (r.userInfo && (block = [r.userInfo objectForKey:@"block"])) {
+		block(obj, nil);
+		[block release];
 	}
 }
 
 - (void)requestFailed:(ASIHTTPRequest *)r {
-	HUWebServiceProxyCallClosure closure;
-	if (r.userInfo && (closure = [r.userInfo objectForKey:@"closure"])) {
-		closure(r, r.error);
-		[closure release];
+	HUWebServiceProxyCallBlock block;
+	if (r.userInfo && (block = [r.userInfo objectForKey:@"block"])) {
+		block(r, r.error);
+		[block release];
 	}
 }
 
@@ -89,7 +89,7 @@
 	NSLog(@"debug: parsedObject %@", parsedObject);
 	#endif
 	
-	// Possibly modify parsedObject and call closure if allowed and appropriate
+	// Possibly modify parsedObject and call block if allowed and appropriate
 	[self requestFinished:r withParsedObject:parsedObject];
 }
 
@@ -98,14 +98,14 @@
 	va_list ap;
 	va_start(ap, method);
 	id arg = nil, args = nil;
-	HUWebServiceProxyCallClosure closure = nil;
+	HUWebServiceProxyCallBlock block = nil;
 	
 	while(1) {
 		if (!(arg = va_arg(ap, id)))
 			break;
 		if (![arg isKindOfClass:[NSDictionary class]]) {
 			// && [[NSString stringWithFormat:@"%@", arg] rangeOfString:@"__NSAutoBlock__"].location != NSNotFound // not workz :(
-			closure = arg;
+			block = arg;
 			break;
 		}
 		else {
@@ -113,21 +113,21 @@
 		}
 	}
 	va_end(ap);
-	return [self call:method args:args closure:closure autostart:YES];
+	return [self call:method args:args block:block autostart:YES];
 }
 
 
-- (ASIHTTPRequest *)call:(NSString *)method closure:(HUWebServiceProxyCallClosure)b {
-	return [self call:method args:nil closure:b autostart:YES];
+- (ASIHTTPRequest *)call:(NSString *)method block:(HUWebServiceProxyCallBlock)b {
+	return [self call:method args:nil block:b autostart:YES];
 }
 
 
-- (ASIHTTPRequest *)call:(NSString *)method args:(id)args closure:(HUWebServiceProxyCallClosure)b {
-	return [self call:method args:args closure:b autostart:YES];
+- (ASIHTTPRequest *)call:(NSString *)method args:(id)args block:(HUWebServiceProxyCallBlock)b {
+	return [self call:method args:args block:b autostart:YES];
 }
 
 
-- (ASIHTTPRequest *)call:(NSString *)method args:(id)args closure:(HUWebServiceProxyCallClosure)cl autostart:(BOOL)start
+- (ASIHTTPRequest *)call:(NSString *)method args:(id)args block:(HUWebServiceProxyCallBlock)cl autostart:(BOOL)start
 {
 	NSURL *url = [self urlForMethod:method withArgs:args];
 	ASIHTTPRequest *r = [ASIHTTPRequest requestWithURL:url];
@@ -138,7 +138,7 @@
 	
 	if (args && cl) {
 		r.userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-									method, @"method", args, @"args", cl, @"closure", nil];
+									method, @"method", args, @"args", cl, @"block", nil];
 	}
 	else if (args) {
 		r.userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -146,7 +146,7 @@
 	}
 	else if (cl) {
 		r.userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-									method, @"method", cl, @"closure", nil];
+									method, @"method", cl, @"block", nil];
 	}
 	else {
 		r.userInfo = [NSDictionary dictionaryWithObject:method forKey:@"method"];
