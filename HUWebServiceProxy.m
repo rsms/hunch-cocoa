@@ -113,21 +113,21 @@
 		}
 	}
 	va_end(ap);
-	return [self call:method args:args block:block autostart:YES];
+	return [self call:method args:args autostart:YES block:block];
 }
 
 
 - (ASIHTTPRequest *)call:(NSString *)method block:(HUWebServiceProxyCallBlock)b {
-	return [self call:method args:nil block:b autostart:YES];
+	return [self call:method args:nil autostart:YES block:b];
 }
 
 
 - (ASIHTTPRequest *)call:(NSString *)method args:(id)args block:(HUWebServiceProxyCallBlock)b {
-	return [self call:method args:args block:b autostart:YES];
+	return [self call:method args:args autostart:YES block:b];
 }
 
 
-- (ASIHTTPRequest *)call:(NSString *)method args:(id)args block:(HUWebServiceProxyCallBlock)cl autostart:(BOOL)start
+- (ASIHTTPRequest *)call:(NSString *)method args:(id)args autostart:(BOOL)start block:(HUWebServiceProxyCallBlock)cl
 {
 	NSURL *url = [self urlForMethod:method withArgs:args];
 	ASIHTTPRequest *r = [ASIHTTPRequest requestWithURL:url];

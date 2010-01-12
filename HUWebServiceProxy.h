@@ -155,8 +155,8 @@ typedef void (^HUWebServiceProxyCallBlock)(id parsedResponseObject, NSError *err
  */
 -(ASIHTTPRequest *)call:(NSString *)method
 									 args:(id)args
-								  block:(HUWebServiceProxyCallBlock)b
-							autostart:(BOOL)autostart;
+							autostart:(BOOL)autostart
+								  block:(HUWebServiceProxyCallBlock)b;
 
 #pragma mark -
 #pragma mark Base
