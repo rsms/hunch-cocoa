@@ -1,0 +1,4 @@
+@interface HUInsetTextFieldCell : NSTextFieldCell {
+}
+
+@end

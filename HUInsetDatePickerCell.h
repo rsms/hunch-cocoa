@@ -1,0 +1,4 @@
+@interface HUInsetDatePickerCell : NSDatePickerCell {
+}
+
+@end

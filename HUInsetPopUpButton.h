@@ -1,0 +1,4 @@
+@interface HUInsetPopUpButton : NSPopUpButton {
+}
+
+@end

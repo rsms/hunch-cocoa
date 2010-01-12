@@ -1,0 +1,4 @@
+@interface HUInsetTokenFieldCell : NSTokenFieldCell {
+}
+
+@end
