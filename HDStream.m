@@ -106,7 +106,7 @@ static void _read_finalize(HDStream *self) {
   close(fd);
 
   dispatch_source_t oldSource = self->readSource_;
-  if (h_casptr(oldSource, nil, self->readSource_))
+  if (h_casptr(&self->readSource_, oldSource, nil))
     dispatch_release(oldSource);
 
   self->fd_ = -1;
@@ -215,7 +215,7 @@ static void _write_finalize(HDStream *self) {
   close(fd);
 
   dispatch_source_t oldSource = self->writeSource_;
-  if (h_casptr(oldSource, nil, self->writeSource_))
+  if (h_casptr(&self->writeSource_, oldSource, nil))
     dispatch_release(oldSource);
 
   self->fd_ = -1;
