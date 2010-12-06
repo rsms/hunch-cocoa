@@ -179,6 +179,8 @@ static void _write(HDStream *self) {
       if (wbuf->next == NULL) {
         // we where the last link in the chain
         self->wbufTail_ = self->wbufHead_ = NULL;
+        // unlock spinlock here since dispatch_suspend might call to kernel
+        OSSpinLockUnlock(&(self->writeSpinLock_));
         // suspend write source until needed
         if (HAFLAG_SET(&(self->flags_), kFlagSuspendedWrite))
           dispatch_suspend(self->writeSource_);
@@ -186,14 +188,14 @@ static void _write(HDStream *self) {
       } else {
         // there are more buffers in the chain
         self->wbufTail_ = wbuf->next;
+        OSSpinLockUnlock(&(self->writeSpinLock_));
         ldprintf("write: advanced to next buffer\n");
       }
-      // discard used buffer
+      // at this point, we know no one else is referring to wbuf, so we can
+      // safely discard of it
       [wbuf->data release];
       CFAllocatorDeallocate(NULL, wbuf);
-      
-      OSSpinLockUnlock(&(self->writeSpinLock_));
-      
+
       // break if input is empty
       if (self->wbufTail_ == NULL)
         break;
