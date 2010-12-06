@@ -1,0 +1,263 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		3A9A237C12ABF688000609F8 /* HDProcess.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A9A237912ABF688000609F8 /* HDProcess.m */; };
+		3A9A237D12ABF688000609F8 /* HDStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A9A237B12ABF688000609F8 /* HDStream.m */; };
+		3A9A24AE12AC3D43000609F8 /* HEventEmitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A9A24AD12AC3D43000609F8 /* HEventEmitter.m */; };
+		3A9A270712AD2473000609F8 /* HRefcountLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A9A270612AD2473000609F8 /* HRefcountLogger.m */; };
+		3A9A291912AD4D80000609F8 /* NSThread-condensedStackTrace.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A9A291812AD4D80000609F8 /* NSThread-condensedStackTrace.m */; };
+		3A9A296412AD8C35000609F8 /* HDSemaphore.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A9A296312AD8C35000609F8 /* HDSemaphore.m */; };
+		3A9A297B12AD9052000609F8 /* hdprocess.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A9A297912AD9052000609F8 /* hdprocess.m */; };
+		8DD76F9C0486AA7600D96B5E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08FB779EFE84155DC02AAC07 /* Foundation.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		8DD76F9E0486AA7600D96B5E /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 8;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		08FB779EFE84155DC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		3A9A237812ABF688000609F8 /* HDProcess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HDProcess.h; sourceTree = "<group>"; };
+		3A9A237912ABF688000609F8 /* HDProcess.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HDProcess.m; sourceTree = "<group>"; };
+		3A9A237A12ABF688000609F8 /* HDStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HDStream.h; sourceTree = "<group>"; };
+		3A9A237B12ABF688000609F8 /* HDStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HDStream.m; sourceTree = "<group>"; };
+		3A9A24AC12AC3D43000609F8 /* HEventEmitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HEventEmitter.h; sourceTree = "<group>"; };
+		3A9A24AD12AC3D43000609F8 /* HEventEmitter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HEventEmitter.m; sourceTree = "<group>"; };
+		3A9A270512AD2473000609F8 /* HRefcountLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HRefcountLogger.h; sourceTree = "<group>"; };
+		3A9A270612AD2473000609F8 /* HRefcountLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HRefcountLogger.m; sourceTree = "<group>"; };
+		3A9A291712AD4D80000609F8 /* NSThread-condensedStackTrace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSThread-condensedStackTrace.h"; sourceTree = "<group>"; };
+		3A9A291812AD4D80000609F8 /* NSThread-condensedStackTrace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSThread-condensedStackTrace.m"; sourceTree = "<group>"; };
+		3A9A296212AD8C35000609F8 /* HDSemaphore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HDSemaphore.h; sourceTree = "<group>"; };
+		3A9A296312AD8C35000609F8 /* HDSemaphore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HDSemaphore.m; sourceTree = "<group>"; };
+		3A9A297812AD9052000609F8 /* fd-receiver.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "fd-receiver.js"; sourceTree = "<group>"; };
+		3A9A297912AD9052000609F8 /* hdprocess.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = hdprocess.m; sourceTree = "<group>"; };
+		8DD76FA10486AA7600D96B5E /* hdprocess */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = hdprocess; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8DD76F9B0486AA7600D96B5E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8DD76F9C0486AA7600D96B5E /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		08FB7794FE84155DC02AAC07 /* hdispatch */ = {
+			isa = PBXGroup;
+			children = (
+				08FB7795FE84155DC02AAC07 /* source */,
+				3A9A297712AD9052000609F8 /* examples */,
+				08FB779DFE84155DC02AAC07 /* Frameworks */,
+				1AB674ADFE9D54B511CA2CBB /* Products */,
+			);
+			name = hdispatch;
+			sourceTree = "<group>";
+		};
+		08FB7795FE84155DC02AAC07 /* source */ = {
+			isa = PBXGroup;
+			children = (
+				3A9A296212AD8C35000609F8 /* HDSemaphore.h */,
+				3A9A296312AD8C35000609F8 /* HDSemaphore.m */,
+				3A9A237A12ABF688000609F8 /* HDStream.h */,
+				3A9A237B12ABF688000609F8 /* HDStream.m */,
+				3A9A237812ABF688000609F8 /* HDProcess.h */,
+				3A9A237912ABF688000609F8 /* HDProcess.m */,
+				3A9A24AC12AC3D43000609F8 /* HEventEmitter.h */,
+				3A9A24AD12AC3D43000609F8 /* HEventEmitter.m */,
+				3A9A291712AD4D80000609F8 /* NSThread-condensedStackTrace.h */,
+				3A9A291812AD4D80000609F8 /* NSThread-condensedStackTrace.m */,
+				3A9A270512AD2473000609F8 /* HRefcountLogger.h */,
+				3A9A270612AD2473000609F8 /* HRefcountLogger.m */,
+			);
+			name = source;
+			sourceTree = "<group>";
+		};
+		08FB779DFE84155DC02AAC07 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				08FB779EFE84155DC02AAC07 /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		1AB674ADFE9D54B511CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8DD76FA10486AA7600D96B5E /* hdprocess */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		3A9A297712AD9052000609F8 /* examples */ = {
+			isa = PBXGroup;
+			children = (
+				3A9A297912AD9052000609F8 /* hdprocess.m */,
+				3A9A297812AD9052000609F8 /* fd-receiver.js */,
+			);
+			path = examples;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8DD76F960486AA7600D96B5E /* hdprocess */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1DEB927408733DD40010E9CD /* Build configuration list for PBXNativeTarget "hdprocess" */;
+			buildPhases = (
+				8DD76F990486AA7600D96B5E /* Sources */,
+				8DD76F9B0486AA7600D96B5E /* Frameworks */,
+				8DD76F9E0486AA7600D96B5E /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = hdprocess;
+			productInstallPath = "$(HOME)/bin";
+			productName = hdispatch;
+			productReference = 8DD76FA10486AA7600D96B5E /* hdprocess */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		08FB7793FE84155DC02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 1DEB927808733DD40010E9CD /* Build configuration list for PBXProject "HD" */;
+			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
+			mainGroup = 08FB7794FE84155DC02AAC07 /* hdispatch */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8DD76F960486AA7600D96B5E /* hdprocess */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8DD76F990486AA7600D96B5E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3A9A237C12ABF688000609F8 /* HDProcess.m in Sources */,
+				3A9A237D12ABF688000609F8 /* HDStream.m in Sources */,
+				3A9A24AE12AC3D43000609F8 /* HEventEmitter.m in Sources */,
+				3A9A270712AD2473000609F8 /* HRefcountLogger.m in Sources */,
+				3A9A291912AD4D80000609F8 /* NSThread-condensedStackTrace.m in Sources */,
+				3A9A296412AD8C35000609F8 /* HDSemaphore.m in Sources */,
+				3A9A297B12AD9052000609F8 /* hdprocess.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		1DEB927508733DD40010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				INSTALL_PATH = /usr/local/bin;
+				PRODUCT_NAME = hdprocess;
+			};
+			name = Debug;
+		};
+		1DEB927608733DD40010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = hdispatch_Prefix.pch;
+				INSTALL_PATH = /usr/local/bin;
+				PRODUCT_NAME = hdprocess;
+			};
+			name = Release;
+		};
+		1DEB927908733DD40010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_PEDANTIC = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PREBINDING = NO;
+				SDKROOT = macosx10.6;
+			};
+			name = Debug;
+		};
+		1DEB927A08733DD40010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+				SDKROOT = macosx10.6;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1DEB927408733DD40010E9CD /* Build configuration list for PBXNativeTarget "hdprocess" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB927508733DD40010E9CD /* Debug */,
+				1DEB927608733DD40010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1DEB927808733DD40010E9CD /* Build configuration list for PBXProject "HD" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB927908733DD40010E9CD /* Debug */,
+				1DEB927A08733DD40010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 08FB7793FE84155DC02AAC07 /* Project object */;
+}
