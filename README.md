@@ -1,19 +1,25 @@
-# Hunch kit
+# Hunch-Cocoa
 
-An assortment of Cocoa -- extensions and additions to Cocoa.
+An assortment of Cocoa
 
-> Coco-what?! Cocoa is an Objective-C-based application library on Mac OS X.
+## MIT license
 
-## Usage
+Copyright (c) 2009-2010 Rasmus Andersson <http://hunch.se/>
 
-Well, just include the parts (files) you want in your Xcode project, build and smile.
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-This code is built to be used in a garbage collected Objective-C 2.0 environment with Mac OS X 10.6 as the minimum target. Patches for adding refcounting and <10.6 support (using ifdefs, please) are welcome.
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
 
-## License
-
-MIT (see LICENSE file for details)
-
-## Authors
-
-- Rasmus Andersson <http://hunch.se/>
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
