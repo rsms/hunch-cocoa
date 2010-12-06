@@ -1,9 +1,8 @@
 #import "HDStream.h"
+#import "hcommon.h"
 #import <libkern/OSAtomic.h>
 #import <fcntl.h>
 #import <sys/socket.h>
-
-#import <sys/stat.h>
 
 /*
  TODO: suspend read source while there is no onData listener
@@ -105,8 +104,11 @@ invoke_on_data_and_return:
 static void _read_finalize(HDStream *self) {
   int fd = dispatch_source_get_handle(self->readSource_);
   close(fd);
-  dispatch_release(self->readSource_);
-  self->readSource_ = nil;
+
+  dispatch_source_t oldSource = self->readSource_;
+  if (h_casptr(oldSource, nil, self->readSource_))
+    dispatch_release(oldSource);
+
   self->fd_ = -1;
   [self release];
 }
@@ -211,8 +213,11 @@ static void _write(HDStream *self) {
 static void _write_finalize(HDStream *self) {
   int fd = dispatch_source_get_handle(self->writeSource_);
   close(fd);
-  dispatch_release(self->writeSource_);
-  self->writeSource_ = nil;
+
+  dispatch_source_t oldSource = self->writeSource_;
+  if (h_casptr(oldSource, nil, self->writeSource_))
+    dispatch_release(oldSource);
+
   self->fd_ = -1;
   [self release];
 }

@@ -45,6 +45,7 @@
 		3A9A296312AD8C35000609F8 /* HDSemaphore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HDSemaphore.m; sourceTree = "<group>"; };
 		3A9A297812AD9052000609F8 /* fd-receiver.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "fd-receiver.js"; sourceTree = "<group>"; };
 		3A9A297912AD9052000609F8 /* hdprocess.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = hdprocess.m; sourceTree = "<group>"; };
+		3A9A2A6C12AD9E41000609F8 /* hcommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hcommon.h; sourceTree = "<group>"; };
 		8DD76FA10486AA7600D96B5E /* hdprocess */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = hdprocess; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -74,6 +75,7 @@
 		08FB7795FE84155DC02AAC07 /* source */ = {
 			isa = PBXGroup;
 			children = (
+				3A9A2A6C12AD9E41000609F8 /* hcommon.h */,
 				3A9A296212AD8C35000609F8 /* HDSemaphore.h */,
 				3A9A296312AD8C35000609F8 /* HDSemaphore.m */,
 				3A9A237A12ABF688000609F8 /* HDStream.h */,
