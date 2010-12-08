@@ -75,6 +75,12 @@ static inline BOOL _isBlockType(id obj) {
 }
 
 
+// C++ does not support passing "non-POD types" for variadic args
+- (void)on:(NSString*)eventName call:(id)block {
+  [self addListenerForEvent:eventName usingBlock:block];
+}
+
+
 - (void)emit:(NSString*)eventName, ... {
   HDSemaphore *sem = objc_getAssociatedObject(self, &gSemaphoreKey);
   if (!sem) return; // no listeners
