@@ -10,6 +10,12 @@ typedef void (^HDProcessBlock)(HDProcess *process);
 
 /*!
  * Subprocess facility based on Grand Central Dispatch.
+ *
+ * Events emitted:
+ * 
+ * - "exit" (HDProcess *self) -- the process exited
+ * - "start" (HDProcess *self) -- the process started
+ *
  */
 @interface HDProcess : NSObject {
  @public
@@ -85,13 +91,13 @@ typedef void (^HDProcessBlock)(HDProcess *process);
 @property dispatch_queue_t dispatchQueue;
 
 // Interface to the process' standard input (writable stream)
-@property(readonly) HDStream *stdinStream;
+@property(readonly) HDStream *stdin;
 
 // Interface to the process' standard output (readable stream)
-@property(readonly) HDStream *stdoutStream;
+@property(readonly) HDStream *stdout;
 
 // Interface to the process' standard error (readable stream)
-@property(readonly) HDStream *stderrStream;
+@property(readonly) HDStream *stderr;
 
 
 // Note: Callbacks might be called on background threads
@@ -184,7 +190,6 @@ typedef void (^HDProcessBlock)(HDProcess *process);
  *    [channel resume];
  *
  */
-- (HDNamedStream*)openChannel:(NSString*)name
-                              onData:(HDStreamBlock)onData;
+- (HDNamedStream*)openChannel:(NSString*)name onData:(HDStreamBlock)onData;
 
 @end

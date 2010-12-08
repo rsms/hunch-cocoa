@@ -79,7 +79,6 @@ static void _proc_handle_ev(HDProcess *self) {
   }
 }
 
-
 // ----------------------------------------------------------------------------
 
 @implementation HDProcess
@@ -91,9 +90,9 @@ static void _proc_handle_ev(HDProcess *self) {
             arguments = arguments_,
             workingDirectory = workingDirectory_,
             environment = environment_,
-            stdinStream = stdinStream_,
-            stdoutStream = stdoutStream_,
-            stderrStream = stderrStream_;
+            stdin = stdinStream_,
+            stdout = stdoutStream_,
+            stderr = stderrStream_;
 
 
 /*+ (void)initialize {
@@ -223,6 +222,9 @@ static void _proc_handle_ev(HDProcess *self) {
                 format:@"already running"];
   }
   
+  // reset exist status
+  exitStatus_ = -1;
+  
   // pipes
   int stdin_pipe[2], stdout_pipe[2], stderr_pipe[2];
   if (pipe(stdout_pipe) < 0 || pipe(stderr_pipe) < 0) {
@@ -334,8 +336,8 @@ static void _proc_handle_ev(HDProcess *self) {
   // create and start process watcher
   procSource_ = dispatch_source_create(DISPATCH_SOURCE_TYPE_PROC, pid_
                                        ,DISPATCH_PROC_EXIT
-                                       //|DISPATCH_PROC_FORK
                                        //|DISPATCH_PROC_EXEC
+                                       //|DISPATCH_PROC_FORK
                                        //|DISPATCH_PROC_SIGNAL
                                        ,dispatchQueue_);
   dispatch_source_set_event_handler_f(procSource_,
