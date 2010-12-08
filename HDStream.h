@@ -46,13 +46,17 @@ typedef void (^HDStreamBlock)(const void *bytes, size_t length);
 // Test if the stream is valid (i.e. valid file descriptor and isn't canceled)
 @property(readonly) BOOL isValid;
 
-/**
+/*!
  * Called when data arrives on a readable stream.
  *
- * When the stream reaches its end the block gets called once with a zero length
- * buffer (to indicate End of Stream).
+ * @discussion
+ * The buffer returned (|bytes|) is guaranteed to have a size of at least
+ * (|length| + 1) which allows you to use that last extra byte for e.g. null
+ * termination. Note that |bytes| is only valid within the calling scope -- it
+ * will become invalid when the onData block returns, so if you need to keep a
+ * reference to the bytes you must make a copy.
  */
-@property(copy) HDStreamBlock onData;
+@property(copy) HDStreamBlock onData; // (const void *bytes, size_t length)
 
 // The dispatch queue on which this stream should schedule on
 @property dispatch_queue_t dispatchQueue;

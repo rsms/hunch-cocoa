@@ -1,4 +1,5 @@
 #import "HDStream.h"
+#import "HEventEmitter.h"
 #import "hcommon.h"
 #import <libkern/OSAtomic.h>
 #import <fcntl.h>
@@ -55,19 +56,24 @@ static void _read(HDStream *self) {
   
   assert(self->readSource_);
 	size_t estimatedSize = dispatch_source_get_data(self->readSource_);
+  
+  // EOF
   if (estimatedSize == 0) {
-    // EOF
     dispatch_source_cancel(self->readSource_);
-    goto invoke_on_data_and_return;
+    [self emit:@"close", self, nil];
+    [self->readBuffer_ setLength:0];
+    [pool drain];
+    return;
   }
   
   // read buffer (safe since reads as serial)
+  size_t bufsizeNeeded = estimatedSize+1; // +1 for user use, e.g. sentinel
   if (!self->readBuffer_) {
-    self->readBuffer_ = [[NSMutableData alloc] initWithCapacity:estimatedSize];
+    self->readBuffer_ = [[NSMutableData alloc] initWithCapacity:bufsizeNeeded];
   } else {
     // increase buffer size if needed
-    if (self->readBuffer_.length < estimatedSize)
-      [self->readBuffer_ setLength:estimatedSize];
+    if (self->readBuffer_.length < bufsizeNeeded)
+      [self->readBuffer_ setLength:bufsizeNeeded];
   }
   
   int fd = dispatch_source_get_handle(self->readSource_);
@@ -85,7 +91,6 @@ static void _read(HDStream *self) {
     printf("Estimated bytes available: %ld -- actual: %ld '%s'\n",
            estimatedSize, length, (char*)buf);
     #endif
-invoke_on_data_and_return:
     //printf("%d DID READ \"%*s\"\n",
     //       dispatch_source_get_handle(self->readSource_), length, buf);
     if (self->onData_) {
