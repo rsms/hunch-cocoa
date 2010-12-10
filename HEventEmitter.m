@@ -81,7 +81,10 @@ static inline BOOL _isBlockType(id obj) {
 }
 
 
-- (void)emit:(NSString*)eventName, ... {
+#define _ARGC_MAX 8
+
+
+- (void)emitEvent:(NSString*)name argv:(id*)argv argc:(NSUInteger)argc {
   HDSemaphore *sem = objc_getAssociatedObject(self, &gSemaphoreKey);
   if (!sem) return; // no listeners
   [sem get];
@@ -89,33 +92,56 @@ static inline BOOL _isBlockType(id obj) {
   NSMutableArray *listeners;
   NSMutableDictionary *listenersDict =
       objc_getAssociatedObject(self, &gListenersKey);
-  if (!listenersDict || !(listeners = [listenersDict objectForKey:eventName])) {
+  if (!listenersDict || !(listeners = [listenersDict objectForKey:name])) {
     [sem put];
     return;
   }
-  // parse arguments
-	va_list valist;
-	va_start(valist, eventName);
-  #define maxargs 8
-  id args[maxargs] = {0,0,0,0,0,0,0,0};
-  id arg;
-  size_t count = 0;
-  while ((arg = va_arg(valist, id)) && count < maxargs) {
-    args[count++] = arg;
-  }
-	va_end(valist);
   // invoke listeners
   @try {
     for (id block in listeners) {
       #if !NDEBUG  // since we might use injected debuggers
       if (!_isBlockType(block)) continue;
       #endif
-      ((void(^)(id,id,id,id,id,id,id,id))block)(args[0],args[1],
-                args[2],args[3],args[4],args[5],args[6],args[7]);
+      ((void(^)(id,id,id,id,id,id,id,id))block)(
+        argc > 0 ? argv[0] : nil,
+        argc > 1 ? argv[1] : nil,
+        argc > 2 ? argv[2] : nil,
+        argc > 3 ? argv[3] : nil,
+        argc > 4 ? argv[4] : nil,
+        argc > 5 ? argv[5] : nil,
+        argc > 6 ? argv[6] : nil,
+        argc > 7 ? argv[7] : nil);
     }
   } @finally {
     [sem put];
   }
+}
+
+
+- (void)emitEvent:(NSString*)name arguments:(NSArray*)arguments {
+  NSUInteger argc = MIN(_ARGC_MAX, arguments.count);
+  id argv[_ARGC_MAX];
+  [arguments getObjects:argv range:NSMakeRange(0, argc)];
+  [self emitEvent:name argv:argv argc:argc];
+}
+
+
+- (void)emitEvent:(NSString*)name argument:(id)argument {
+  [self emitEvent:name argv:(argument ? &argument : nil) argc:0];
+}
+
+
+- (void)emitEvent:(NSString*)name, ... {
+	va_list valist;
+	va_start(valist, name);
+  id args[_ARGC_MAX];
+  id arg;
+  size_t count = 0;
+  while ((arg = va_arg(valist, id)) && count < _ARGC_MAX) {
+    args[count++] = arg;
+  }
+	va_end(valist);
+  [self emitEvent:name argv:args argc:count];
 }
 
 

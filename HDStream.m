@@ -60,7 +60,7 @@ static void _read(HDStream *self) {
   // EOF
   if (estimatedSize == 0) {
     dispatch_source_cancel(self->readSource_);
-    [self emit:@"close", self, nil];
+    [self emitEvent:@"close" argument:self];
     [self->readBuffer_ setLength:0];
     [pool drain];
     return;

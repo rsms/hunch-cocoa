@@ -72,7 +72,7 @@ static void _proc_handle_ev(HDProcess *self) {
     // clear pid
     self->pid_ = -1;
 
-    [self emit:@"exit", self, nil];
+    [self emitEvent:@"exit" argument:self];
 
     // release proc sources' reference to self
     [self release];

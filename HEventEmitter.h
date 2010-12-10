@@ -16,8 +16,17 @@
 // Register |block| to be called when |event| is emitted from the receiver
 - (void)addListenerForEvent:(NSString *)name usingBlock:(id)block;
 
-// Emit an event with variable arguments terminated by nil
-- (void)emit:(NSString*)eventName, ... __attribute__((sentinel));
+// Emit an event named |name| with |arguments|
+- (void)emitEvent:(NSString*)name arguments:(NSArray*)arguments;
+
+// Emit an event named |name| with single |argument|
+- (void)emitEvent:(NSString*)name argument:(id)argument;
+
+// Emit an event named |name| with variable arguments terminated by nil
+- (void)emitEvent:(NSString*)name, ... __attribute__((sentinel));
+
+// Emit an event named |name| with arguments in |argv| of length |argc|
+- (void)emitEvent:(NSString*)name argv:(id*)argv argc:(NSUInteger)argc;
 
 // Remove listener for a specific event
 - (void)removeListener:(id)block forEvent:(NSString*)eventName;
