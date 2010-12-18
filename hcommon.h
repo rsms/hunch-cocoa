@@ -114,6 +114,31 @@ static inline id h_swapid(id *target, id newval) {
   return oldval;
 }
 
+/*!
+ * Forward missing invocations to class instance |member|
+ */
+#define H_FORWARD_INVOCATION_TO_MEMBER_IMPL(member) \
+- (NSMethodSignature *)methodSignatureForSelector:(SEL)sel { \
+  NSMethodSignature* sig = [super methodSignatureForSelector:sel]; \
+	if (!sig && member) \
+    sig = [member methodSignatureForSelector:sel]; \
+  return sig; \
+} \
+- (BOOL)respondsToSelector:(SEL)sel { \
+	BOOL y = [super respondsToSelector:sel]; \
+  if (!y) y = !!member && [member respondsToSelector:sel]; \
+  return y; \
+} \
+- (void)forwardInvocation:(NSInvocation *)invocation { \
+  SEL sel = [invocation selector]; \
+  if (member && [member respondsToSelector:sel]) { \
+    [invocation invokeWithTarget:member]; \
+  } else { \
+    [self doesNotRecognizeSelector:sel]; \
+  } \
+}
+
+
 #endif // __OBJC__
 
 #endif // H_COMMON_H_
