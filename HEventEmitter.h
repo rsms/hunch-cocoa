@@ -8,10 +8,10 @@
  */
 #ifndef __cplusplus
 - (void)on:(NSString*)eventName, ...;
-#else
-// C++ does not support passing "non-POD types" for variadic args
+#endif
+
+// Shorthand for addListenerForEvent:usingBlock:
 - (void)on:(NSString*)eventName call:(id)block;
-#endif  // __cplusplus
 
 // Register |block| to be called when |event| is emitted from the receiver
 - (void)addListenerForEvent:(NSString *)name usingBlock:(id)block;
