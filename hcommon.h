@@ -65,7 +65,7 @@
  *
  * Example:
  *    dispatch_source_t writeSource = foo->writeSource_;
- *    if (h_casptr(writeSource, nil, &(foo->writeSource_)))
+ *    if (h_casptr(&(foo->writeSource_), writeSource, nil))
  *      dispatch_release(writeSource);
  *
  * Prototype:
