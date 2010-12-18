@@ -124,6 +124,12 @@ typedef void (^HDProcessBlock)(HDProcess *process);
 // Launch the process, setting |arguments| from nil-terminated argument list.
 - (void)startWithArguments:(id)firstArgument, ... __attribute__((sentinel));
 
+// Terminate the process (sends signal 2 aka SIGINT aka interrupt)
+- (void)terminate;
+
+// Send a signal to the process. Returns true on success.
+- (BOOL)sendSignal:(int)signum;
+
 /**
  * Create a new bidirectional channel.
  *

@@ -445,6 +445,21 @@ static void _proc_handle_ev(HDProcess *self) {
 }
 
 
+// Send a signal to the process
+- (BOOL)sendSignal:(int)signum {
+  if (pid_ < 1) {
+    return NO;
+  } else {
+    return kill(pid_, signum) == 0;
+  }
+}
+
+
+- (void)terminate {
+  [self sendSignal:SIGINT];
+}
+
+
 - (NSString*)description {
   return [NSString stringWithFormat:@"<%@@%p %@ '%@'>",
           NSStringFromClass([self class]), self,
