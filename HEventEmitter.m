@@ -198,4 +198,40 @@ static inline BOOL _isBlockType(id obj) {
 }
 
 
+- (void)observe:(NSString*)notificationName
+         source:(id)source
+        handler:(SEL)handler {
+  NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+  [nc addObserver:self selector:handler name:notificationName object:source];
+}
+
+
+- (void)post:(NSString*)notificationName {
+  NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+  [nc postNotificationName:notificationName object:self];
+}
+
+- (void)stopObserving {
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)stopObserving:(NSString*)notificationName {
+  [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                  name:notificationName
+                                                object:nil];
+}
+
+- (void)stopObserving:(NSString*)notificationName source:(id)source {
+  [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                  name:notificationName
+                                                object:source];
+}
+
+- (void)stopObservingObject:(id)source {
+  [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                  name:nil
+                                                object:source];
+}
+
+
 @end

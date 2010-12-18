@@ -40,4 +40,24 @@
 // Remove all listeners
 - (void)removeAllListeners;
 
+// Observe |notificationName| originating from |source| invoking |handler|
+- (void)observe:(NSString*)notificationName
+         source:(id)source
+        handler:(SEL)handler;
+
+// Post a notification with self as source
+- (void)post:(NSString*)notificationName;
+
+// Remove self as an observer for ALL registered observations
+- (void)stopObserving;
+
+// Remove self as an observer for |notificationName| from ANY source
+- (void)stopObserving:(NSString*)notificationName;
+
+// Remove self as an observer for |notificationName| from |source|
+- (void)stopObserving:(NSString*)notificationName source:(id)source;
+
+// Remove self as an observer for ANY notification from |source|
+- (void)stopObservingObject:(id)source;
+
 @end
