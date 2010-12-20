@@ -255,12 +255,11 @@ static void _proc_handle_ev(HDProcess *self) {
   char **saved_env = environ;
   
   // vfork & execvp
-  pid_ = vfork();
+  pid_ = fork();
   if (pid_ == -1) {
     [NSException raise:NSInternalInconsistencyException format:@"vfork()"];
   } else if (pid_ == 0) {
     // child
-    NSAutoreleasePool *pool = [NSAutoreleasePool new];
     
     // close parent end of pipes and assign our stdio to our end
     close(stdin_pipe[1]);  // close write end
@@ -317,9 +316,6 @@ static void _proc_handle_ev(HDProcess *self) {
     } else {
       _argv[0] = strdup(file);
     }
-    
-    // drain autoreleased stuff
-    [pool drain];
     
     // switch process image
     execvp(file, argv);
