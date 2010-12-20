@@ -89,7 +89,7 @@
  *
  * Example:
  *    - (void)setFoo:(id)foo {
- *      h_atomic_casid(&foo_, foo);
+ *      h_casid(&foo_, foo);
  *    }
  */
 static inline BOOL h_casid(id volatile *target, id newval) {

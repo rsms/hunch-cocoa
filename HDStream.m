@@ -286,7 +286,7 @@ static void _write_finalize(HDStream *self) {
 
 
 + (id)streamWithFileDescriptor:(int)fileDescriptor {
-  HDStream *stream = [self alloc]; // to avoid "Multiple medods..." warn
+  HDStream *stream = [self alloc]; // to avoid "Multiple methods..." warn
   return [[stream initWithFileDescriptor:fileDescriptor] autorelease];
 }
 
@@ -368,8 +368,14 @@ static void _write_finalize(HDStream *self) {
 
 
 - (void)dealloc {
-  if (onData_) [onData_ release];
-  if (readBuffer_) [readBuffer_ release];
+  if (onData_) {
+    [onData_ release];
+    onData_ = nil;
+  }
+  if (readBuffer_) {
+    [readBuffer_ release];
+    readBuffer_ = nil;
+  }
   if (readSource_) {
     dispatch_release(readSource_);
     readSource_ = nil;
@@ -379,6 +385,14 @@ static void _write_finalize(HDStream *self) {
     dispatchQueue_ = nil;
   }
   [super dealloc];
+}
+
+
+- (void)finalize {
+  onData_ = nil;
+  readBuffer_ = nil;
+  readSource_ = nil;
+  dispatchQueue_ = nil;
 }
 
 
