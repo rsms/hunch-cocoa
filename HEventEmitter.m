@@ -5,14 +5,13 @@
 
 static char gListenersKey;
 static char gSemaphoreKey;
-
-@implementation NSObject (HEventEmitter)
-
 static Class gBlockClass;
 
-+ (void)initialize {
+static void __attribute__((constructor(0))) __NSObject_HEventEmitter_init() {
   gBlockClass = [^{} class];
 }
+
+@implementation NSObject (HEventEmitter)
 
 
 static inline BOOL _isBlockType(id obj) {
