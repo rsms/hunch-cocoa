@@ -294,7 +294,7 @@ static void _write_finalize(HDStream *self) {
 - (id)init {
   if ((self = [super init])) {
     fd_ = -1;
-    FLAG_SET(kFlagSuspended);
+    uint32_t unused = FLAG_SET(kFlagSuspended);
     writeSpinLock_ = OS_SPINLOCK_INIT;
     dispatchQueue_ =
         dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
@@ -325,14 +325,18 @@ static void _write_finalize(HDStream *self) {
     [NSException raise:NSInvalidArgumentException format:@"%s",strerror(errno)];
   mode = mode & O_ACCMODE;
   if (mode == O_RDONLY) {
-    disableReading ? FLAG_CLEAR(kFlagReadable) : FLAG_SET(kFlagReadable);
+    uint32_t unused = (disableReading ? FLAG_CLEAR(kFlagReadable)
+                                      : FLAG_SET(kFlagReadable));
     FLAG_CLEAR(kFlagWritable);
   } else if (mode == O_WRONLY) {
     FLAG_CLEAR(kFlagReadable);
-    disableWriting ? FLAG_CLEAR(kFlagWritable) : FLAG_SET(kFlagWritable);
+    uint32_t unused = (disableWriting ? FLAG_CLEAR(kFlagWritable)
+                                      : FLAG_SET(kFlagWritable));
   } else if (mode == O_RDWR) {
-    disableReading ? FLAG_CLEAR(kFlagReadable) : FLAG_SET(kFlagReadable);
-    disableWriting ? FLAG_CLEAR(kFlagWritable) : FLAG_SET(kFlagWritable);
+    uint32_t unused = (disableReading ? FLAG_CLEAR(kFlagReadable)
+                                      : FLAG_SET(kFlagReadable));
+    unused = (disableWriting ? FLAG_CLEAR(kFlagWritable)
+                             : FLAG_SET(kFlagWritable));
   }
 
   // set queue
@@ -521,7 +525,7 @@ static void _write_finalize(HDStream *self) {
       dispatch_resume(writeSource_);
     } else {
       // important to balance resume/suspend calls, so record writer state
-      FLAG_SET(kFlagSuspendedWrite);
+      uint32_t unused = FLAG_SET(kFlagSuspendedWrite);
     }
   } else {
     OSSpinLockUnlock(&writeSpinLock_);
