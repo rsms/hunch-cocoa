@@ -48,6 +48,17 @@
 // Post a notification with self as source
 - (void)post:(NSString*)notificationName;
 
+// Post a notification with self as source including |userInfo|
+- (void)post:(NSString*)notificationName userInfo:(NSDictionary*)userInfo;
+
+/*!
+ * Post a notification with self as source, creating a user info dictionary with
+ * |userInfoObject| for |userInfoKey|.
+ */
+- (void)post:(NSString*)notificationName
+  userObject:(id)userInfoObject
+      forKey:(id)userInfoKey;
+
 // Remove self as an observer for ALL registered observations
 - (void)stopObserving;
 

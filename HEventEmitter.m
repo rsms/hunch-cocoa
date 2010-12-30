@@ -210,6 +210,20 @@ static inline BOOL _isBlockType(id obj) {
   [nc postNotificationName:notificationName object:self];
 }
 
+- (void)post:(NSString*)notificationName userInfo:(NSDictionary*)userInfo {
+  NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+  [nc postNotificationName:notificationName object:self userInfo:userInfo];
+}
+
+- (void)post:(NSString*)notificationName
+  userObject:(id)userInfoObject
+      forKey:(id)userInfoKey {
+  NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+  NSDictionary *userInfo = [NSDictionary dictionaryWithObject:userInfoObject
+                                                       forKey:userInfoKey];
+  [nc postNotificationName:notificationName object:self userInfo:userInfo];
+}
+
 - (void)stopObserving {
   [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
