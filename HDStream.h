@@ -21,7 +21,7 @@ typedef void (^HDStreamBlock)(const void *bytes, size_t length);
   dispatch_queue_t dispatchQueue_;
   uint32_t flags_;
   int fd_;
-  
+
   dispatch_source_t readSource_;
   dispatch_source_t writeSource_;
   HDStreamBlock onData_;

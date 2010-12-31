@@ -139,7 +139,7 @@
                                 onDataBlock:(NSError*(^)(NSData *data))onData
                             onCompleteBlock:(void(^)(NSError *err, NSData *data))onComplete
                            startImmediately:(BOOL)startImmediately {
-  NSURLRequest *req = 
+  NSURLRequest *req =
       [NSURLRequest requestWithURL:self
                        cachePolicy:NSURLRequestUseProtocolCachePolicy
                    timeoutInterval:60.0];

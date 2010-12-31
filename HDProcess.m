@@ -49,12 +49,12 @@ static BOOL _fd_socketpipe(int fd[2]) {
 
 static void _proc_handle_ev(HDProcess *self) {
   unsigned long flags = dispatch_source_get_data(self->procSource_);
-  /*#define DPFLAG(X) ((flags & DISPATCH_PROC_##X) ? #X" " : "")  
+  /*#define DPFLAG(X) ((flags & DISPATCH_PROC_##X) ? #X" " : "")
   fprintf(stderr, "process %d: flags: %lx %s%s%s%s\n",
         self.pid, flags,
         DPFLAG(EXIT), DPFLAG(FORK), DPFLAG(EXEC), DPFLAG(SIGNAL));*/
   if (flags & DISPATCH_PROC_EXIT) {
-		waitpid(self->pid_, &(self->exitStatus_), WNOHANG);
+    waitpid(self->pid_, &(self->exitStatus_), WNOHANG);
 
     // cancel proc source
     dispatch_source_cancel(self->procSource_);
@@ -103,10 +103,10 @@ static void _proc_handle_ev(HDProcess *self) {
 + (HDProcess*)start:(NSString*)program, ... {
   HDProcess *proc = [[HDProcess alloc] init];
   proc.program = program;
-	va_list valist;
-	va_start(valist, program);
+  va_list valist;
+  va_start(valist, program);
   [proc setVariableArguments:valist];
-	va_end(valist);
+  va_end(valist);
   return proc;
 }
 
@@ -150,7 +150,7 @@ static void _proc_handle_ev(HDProcess *self) {
   assert(pid_ == -1);
 
   dispatch_release(dispatchQueue_); // no effect if its a global shared queue
-  
+
   [channels_ release];
 
   [stdinStream_ release];
@@ -215,23 +215,23 @@ static void _proc_handle_ev(HDProcess *self) {
     [NSException raise:NSInvalidArgumentException
                 format:@"\"program\" has not been set"];
   }
-  
+
   // check that we are not running
   if (self.isRunning) {
     [NSException raise:NSInternalInconsistencyException
                 format:@"already running"];
   }
-  
+
   // reset exist status
   exitStatus_ = -1;
-  
+
   // pipes
   int stdin_pipe[2], stdout_pipe[2], stderr_pipe[2];
   if (pipe(stdout_pipe) < 0 || pipe(stderr_pipe) < 0) {
     [NSException raise:NSInternalInconsistencyException
                 format:@"pipe(): %s", strerror(errno)];
   }
-  
+
   // stdin (unix socket if usesSocketStdin_ is true, used for FD delegation)
   if (hasSocketpair_) {
     if (!_fd_socketpipe(stdin_pipe)) {
@@ -245,22 +245,22 @@ static void _proc_handle_ev(HDProcess *self) {
                   format:@"pipe(): %s", strerror(errno)];
     }
   }
-  
+
   // set close-on-exec flag
   _fd_set_closeonexec(stdin_pipe[0]);  _fd_set_closeonexec(stdin_pipe[1]);
   _fd_set_closeonexec(stdout_pipe[0]); _fd_set_closeonexec(stdout_pipe[1]);
   _fd_set_closeonexec(stderr_pipe[0]); _fd_set_closeonexec(stderr_pipe[1]);
-  
+
   // save environ in the case that we get it clobbered by the child process.
   char **saved_env = environ;
-  
+
   // vfork & execvp
   pid_ = fork();
   if (pid_ == -1) {
     [NSException raise:NSInternalInconsistencyException format:@"vfork()"];
   } else if (pid_ == 0) {
     // child
-    
+
     // close parent end of pipes and assign our stdio to our end
     close(stdin_pipe[1]);  // close write end
     dup2(stdin_pipe[0],  STDIN_FILENO);
@@ -268,12 +268,12 @@ static void _proc_handle_ev(HDProcess *self) {
     dup2(stdout_pipe[1], STDOUT_FILENO);
     close(stderr_pipe[0]);  // close read end
     dup2(stderr_pipe[1], STDERR_FILENO);
-    
+
     // chdir
     if (workingDirectory_ && chdir([workingDirectory_ UTF8String]) != 0) {
       _exit(127);
     }
-    
+
     // set environment
     if (environment_) {
       NSUInteger envlen = [environment_ count];
@@ -299,7 +299,7 @@ static void _proc_handle_ev(HDProcess *self) {
 
     // executable
     const char *file = [program_ UTF8String];
-    
+
     // args
     char *_argv[2] = {NULL, NULL};
     char **argv = (char**)&_argv;
@@ -316,19 +316,19 @@ static void _proc_handle_ev(HDProcess *self) {
     } else {
       _argv[0] = strdup(file);
     }
-    
+
     // switch process image
     execvp(file, argv);
 
     // if we get here execvp failed
     _exit(127);
   }
-  
+
   // [parent]
 
   // restore environment
   environ = saved_env;
-  
+
   // create and start process watcher
   procSource_ = dispatch_source_create(DISPATCH_SOURCE_TYPE_PROC, pid_
                                        ,DISPATCH_PROC_EXIT
@@ -340,17 +340,17 @@ static void _proc_handle_ev(HDProcess *self) {
                                       (dispatch_function_t)&_proc_handle_ev);
   dispatch_set_context(procSource_, [self retain]); // released by ^
   dispatch_resume(procSource_);
-  
+
   // close other end of pipes
   close(stdin_pipe[0]);//  _fd_set_nonblock(stdin_pipe[1]);
   close(stdout_pipe[1]);// _fd_set_nonblock(stdout_pipe[0]);
   close(stderr_pipe[1]);// _fd_set_nonblock(stderr_pipe[0]);
-  
+
   // explicitly set dispatchQueue_
   stdinStream_.dispatchQueue = dispatchQueue_;
   stdoutStream_.dispatchQueue = dispatchQueue_;
   stderrStream_.dispatchQueue = dispatchQueue_;
-  
+
   // setup and resume stdin, stdout and stderr streams
   HDStream *stdinStream = [stdinStream_
     copyWithFileDescriptor:stdin_pipe[1] disableReading:YES disableWriting:NO];
@@ -358,17 +358,17 @@ static void _proc_handle_ev(HDProcess *self) {
     copyWithFileDescriptor:stdout_pipe[0] disableReading:NO disableWriting:YES];
   HDStream *stderrStream = [stderrStream_
     copyWithFileDescriptor:stderr_pipe[0] disableReading:NO disableWriting:YES];
-  
+
   // swap instances
   id old = stdinStream_; stdinStream_ = stdinStream; [old release];
   old = stdoutStream_; stdoutStream_ = stdoutStream; [old release];
   old = stderrStream_; stderrStream_ = stderrStream; [old release];
-  
+
   // make sure they are all in an unsuspended state
   [stdinStream_ resume];
   [stdoutStream_ resume];
   [stderrStream_ resume];
-  
+
   // dequeue any queued input
   if (queuedInput_) {
     for (id entry in queuedInput_) {
@@ -406,7 +406,7 @@ static void _proc_handle_ev(HDProcess *self) {
   HDNamedStream *stream =
       [HDNamedStream streamWithFileDescriptor:fds[0] name:name];
   stream.dispatchQueue = dispatchQueue_;
-  
+
   // register object
   if (!channels_) {
     channels_ = [[NSMutableArray alloc] initWithObjects:stream, nil];
@@ -427,7 +427,7 @@ static void _proc_handle_ev(HDProcess *self) {
     // send the other part of the FD pair to the process
     [stdinStream_ writeFileDescriptor:fds[1] name:name];
   }
-  
+
   return stream;
 }
 

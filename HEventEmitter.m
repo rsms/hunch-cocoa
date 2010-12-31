@@ -64,11 +64,11 @@ static inline BOOL _isBlockType(id obj) {
 
 
 - (void)on:(NSString*)eventName, ... {
-	void (^block)(void);
-	va_list valist;
-	va_start(valist, eventName);
-	block = va_arg(valist, void(^)(void));
-	va_end(valist);
+  void (^block)(void);
+  va_list valist;
+  va_start(valist, eventName);
+  block = va_arg(valist, void(^)(void));
+  va_end(valist);
   if (block)
     [self addListenerForEvent:eventName usingBlock:block];
 }
@@ -87,7 +87,7 @@ static inline BOOL _isBlockType(id obj) {
   HDSemaphore *sem = objc_getAssociatedObject(self, &gSemaphoreKey);
   if (!sem) return; // no listeners
   [sem get];
-  
+
   NSMutableArray *listeners;
   NSMutableDictionary *listenersDict =
       objc_getAssociatedObject(self, &gListenersKey);
@@ -131,15 +131,15 @@ static inline BOOL _isBlockType(id obj) {
 
 
 - (void)emitEvent:(NSString*)name, ... {
-	va_list valist;
-	va_start(valist, name);
+  va_list valist;
+  va_start(valist, name);
   id args[_ARGC_MAX];
   id arg;
   size_t count = 0;
   while ((arg = va_arg(valist, id)) && count < _ARGC_MAX) {
     args[count++] = arg;
   }
-	va_end(valist);
+  va_end(valist);
   [self emitEvent:name argv:args argc:count];
 }
 

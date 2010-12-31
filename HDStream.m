@@ -53,10 +53,10 @@ static void _read(HDStream *self) {
   NSAutoreleasePool *pool = [NSAutoreleasePool new];
   void *buf = NULL;
   ssize_t length = 0;
-  
+
   assert(self->readSource_);
-	size_t estimatedSize = dispatch_source_get_data(self->readSource_);
-  
+  size_t estimatedSize = dispatch_source_get_data(self->readSource_);
+
   // EOF
   if (estimatedSize == 0) {
     dispatch_source_cancel(self->readSource_);
@@ -65,7 +65,7 @@ static void _read(HDStream *self) {
     [pool drain];
     return;
   }
-  
+
   // read buffer (safe since reads as serial)
   size_t bufsizeNeeded = estimatedSize+1; // +1 for user use, e.g. sentinel
   if (!self->readBuffer_) {
@@ -75,7 +75,7 @@ static void _read(HDStream *self) {
     if (self->readBuffer_.length < bufsizeNeeded)
       [self->readBuffer_ setLength:bufsizeNeeded];
   }
-  
+
   int fd = dispatch_source_get_handle(self->readSource_);
   buf = [self->readBuffer_ mutableBytes];
   length = read(fd, buf, estimatedSize);
@@ -84,7 +84,7 @@ static void _read(HDStream *self) {
       NSLog(@"%@: read(): [%d] %s -- closing the file descriptor", self, errno,
             strerror(errno));
       dispatch_source_cancel(self->readSource_);
-		}
+    }
   } else {
     #if 0  // debug
     ((char*)buf)[length] = '\0';
@@ -101,7 +101,7 @@ static void _read(HDStream *self) {
       }
     }
   }
-  
+
   [pool drain];
 }
 
@@ -125,7 +125,7 @@ static void _write(HDStream *self) {
   int fd = dispatch_source_get_handle(self->writeSource_);
   ldprintf("write: available %ld\n",
            dispatch_source_get_data(self->writeSource_));
-  
+
   // write all chained buffers. break on empty input or full output
   //
   // Note: You might think that writev(2) would be a better solution here, but
@@ -150,7 +150,7 @@ static void _write(HDStream *self) {
     ssize_t written = write(fd, &buf[wbuf->offset], len);
     ldprintf("write(%d, %p (+%lu), %lu) -> %lu\n", fd, &buf[wbuf->offset],
              wbuf->offset, len, written);
-    
+
     // handle result
     if (written < 0) {
       ldprintf("write() error: [%d] %s", errno, strerror(errno));
@@ -346,9 +346,9 @@ static void _write_finalize(HDStream *self) {
   // setup read source
   if (FLAG_TEST(kFlagReadable))
     [self _createReadSource];
-  
+
   // future: setup write source
-  
+
   return self;
 }
 
@@ -505,7 +505,7 @@ static void _write_finalize(HDStream *self) {
   wbuf->data = [data retain];
   wbuf->next = NULL;
   wbuf->offset = 0;
-  
+
   OSSpinLockLock(&writeSpinLock_);
   if (wbufHead_) {
     // there's already a buffer chain -- push_front
@@ -595,15 +595,15 @@ static void _write_finalize(HDStream *self) {
   size_t buffer_length = buffer_data ? strlen(buffer_data) : 0;
   size_t offset = 0;
   size_t length = buffer_length - offset;
-  
+
   iov.iov_base = (void*)(buffer_data + offset);
   iov.iov_len = length;
-  
+
   int flags = 0;
-  
+
   struct msghdr msg;
   char scratch[64];
-  
+
   msg.msg_iov = &iov;
   msg.msg_iovlen = 1;
   msg.msg_name = NULL;
@@ -611,27 +611,27 @@ static void _write_finalize(HDStream *self) {
   msg.msg_flags = 0;
   msg.msg_control = NULL;
   msg.msg_controllen = 0;
-  
+
   struct cmsghdr *cmsg;
-  
+
   msg.msg_control = (void*)scratch;
   msg.msg_controllen = CMSG_LEN(sizeof(fd));
-  
+
   cmsg = CMSG_FIRSTHDR(&msg);
   cmsg->cmsg_level = SOL_SOCKET;
   cmsg->cmsg_type = SCM_RIGHTS;
   cmsg->cmsg_len = msg.msg_controllen;
   *(int*)CMSG_DATA(cmsg) = fd;
-  
+
   ssize_t written = sendmsg(fd_, &msg, flags);
-  
+
   if (written < 0) {
     if (errno == EAGAIN || errno == EINTR)
       return YES;
     [NSException raise:NSInvalidArgumentException
                 format:@"sendmsg(): %s", strerror(errno)];
   }
-  
+
   return NO;
 }
 

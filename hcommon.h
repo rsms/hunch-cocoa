@@ -13,19 +13,19 @@
  * Copyright (c) 2008-2009 Apple Inc. All rights reserved.
  *
  * @APPLE_APACHE_LICENSE_HEADER_START@
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  * @APPLE_APACHE_LICENSE_HEADER_END@
  */
 #if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 2)
@@ -35,22 +35,22 @@
   //         resulting register pressure
   // p = pointer to target, o = old value, n = new value
   #if 0 && defined(__i386__) || defined(__x86_64__)
-    #define h_atomic_xchg(p, n)	({ typeof(*(p)) _r; asm("xchg %0, %1" : "=r" (_r) : "m" (*(p)), "0" (n)); _r; })
+    #define h_atomic_xchg(p, n)  ({ typeof(*(p)) _r; asm("xchg %0, %1" : "=r" (_r) : "m" (*(p)), "0" (n)); _r; })
   #else
-    #define h_atomic_xchg(p, n)	((typeof(*(p)))__sync_lock_test_and_set((p), (n)))
+    #define h_atomic_xchg(p, n)  ((typeof(*(p)))__sync_lock_test_and_set((p), (n)))
   #endif
-  #define h_atomic_cas(p, o, n)	__sync_bool_compare_and_swap((p), (o), (n))
-  #define h_atomic_inc(p)	__sync_add_and_fetch((p), 1)
-  #define h_atomic_dec(p)	__sync_sub_and_fetch((p), 1)
-  #define h_atomic_add(p, v)	__sync_add_and_fetch((p), (v))
-  #define h_atomic_sub(p, v)	__sync_sub_and_fetch((p), (v))
-  #define h_atomic_or(p, v)	__sync_fetch_and_or((p), (v))
-  #define h_atomic_and(p, v)	__sync_fetch_and_and((p), (v))
+  #define h_atomic_cas(p, o, n)  __sync_bool_compare_and_swap((p), (o), (n))
+  #define h_atomic_inc(p)  __sync_add_and_fetch((p), 1)
+  #define h_atomic_dec(p)  __sync_sub_and_fetch((p), 1)
+  #define h_atomic_add(p, v)  __sync_add_and_fetch((p), (v))
+  #define h_atomic_sub(p, v)  __sync_sub_and_fetch((p), (v))
+  #define h_atomic_or(p, v)  __sync_fetch_and_or((p), (v))
+  #define h_atomic_and(p, v)  __sync_fetch_and_and((p), (v))
   #if defined(__i386__) || defined(__x86_64__)
     // GCC emits nothing for __sync_synchronize() on i386/x86_64
-    #define h_atomic_barrier()	__asm__ __volatile__("mfence")
+    #define h_atomic_barrier()  __asm__ __volatile__("mfence")
   #else
-    #define h_atomic_barrier()	__sync_synchronize()
+    #define h_atomic_barrier()  __sync_synchronize()
   #endif
 #else
   #error "Please upgrade to GCC 4.2 or newer"
@@ -120,12 +120,12 @@ static inline id h_swapid(id *target, id newval) {
 #define H_FORWARD_INVOCATION_TO_MEMBER_IMPL(member) \
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)sel { \
   NSMethodSignature* sig = [super methodSignatureForSelector:sel]; \
-	if (!sig && member) \
+  if (!sig && member) \
     sig = [member methodSignatureForSelector:sel]; \
   return sig; \
 } \
 - (BOOL)respondsToSelector:(SEL)sel { \
-	BOOL y = [super respondsToSelector:sel]; \
+  BOOL y = [super respondsToSelector:sel]; \
   if (!y) y = !!member && [member respondsToSelector:sel]; \
   return y; \
 } \

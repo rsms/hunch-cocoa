@@ -1,6 +1,6 @@
 /*!
  * A URL connection which uses block handlers.
- * 
+ *
  * Note: a connection object holds a reference to itself while active which is
  * released after the connection has completed (i.e. you don't need to handle
  * reference counting with respect to the connection lifetime).

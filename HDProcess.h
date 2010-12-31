@@ -12,7 +12,7 @@ typedef void (^HDProcessBlock)(HDProcess *process);
  * Subprocess facility based on Grand Central Dispatch.
  *
  * Events emitted:
- * 
+ *
  * - "exit" (HDProcess *self) -- the process exited
  * - "start" (HDProcess *self) -- the process started
  *
@@ -23,14 +23,14 @@ typedef void (^HDProcessBlock)(HDProcess *process);
   NSArray *arguments_;
   NSString *workingDirectory_;
   NSDictionary *environment_;
-  
+
   dispatch_source_t procSource_;
-  
+
   HDStream *stdinStream_;
   HDStream *stdoutStream_;
   HDStream *stderrStream_;
   NSMutableArray *channels_;
-  
+
   dispatch_queue_t dispatchQueue_;
   pid_t pid_;
   int exitStatus_;
@@ -161,11 +161,11 @@ typedef void (^HDProcessBlock)(HDProcess *process);
  *    var net = require("net");
  *    var stdin = new net.Stream(0, 'unix');
  *    stdin.on('fd', function (fd) {
- *    	var stream = new net.Stream(fd, "unix");
- *    	stream.resume();
- *    	stream.on('data', function (message) {
- *    	  stream.write('pong '+message.toString('utf8'));
- *    	});
+ *      var stream = new net.Stream(fd, "unix");
+ *      stream.resume();
+ *      stream.on('data', function (message) {
+ *        stream.write('pong '+message.toString('utf8'));
+ *      });
  *    });
  *    stdin.resume();
  *
@@ -179,7 +179,7 @@ typedef void (^HDProcessBlock)(HDProcess *process);
  *      if (length == 0) return; // EOS
  *      printf("channel.onData -> %*s\n", length, (const char*)bytes);
  *    }];
- * 
+ *
  * The returned HDStream is autoreleased, but will remain valid until
  * the channel is closed (A reference is managed by its dispatch queue). Note
  * that the returned stream pair is in a suspended state and need to receive a
