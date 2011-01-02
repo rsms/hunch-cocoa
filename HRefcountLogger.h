@@ -1,7 +1,11 @@
 #import <Cocoa/Cocoa.h>
 
 #ifndef WARN_UNUSED
-#define WARN_UNUSED __attribute__((warn_unused_result))
+  #ifndef __cplusplus
+    #define WARN_UNUSED __attribute__((warn_unused_result))
+  #else
+    #define WARN_UNUSED
+  #endif
 #endif
 
 @interface HRefcountLogger : NSObject {
