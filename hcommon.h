@@ -98,7 +98,7 @@ static inline BOOL h_casid(id volatile *target, id newval) {
   id oldval = *target;
   if (h_casptr(target, oldval, newval)) {
     [newval retain];
-    [oldval autorelease];
+    [oldval release];
     return YES;
   }
   return NO;
@@ -112,7 +112,7 @@ static inline BOOL h_casid(id volatile *target, id newval) {
 static inline id h_swapid(id *target, id newval) {
   id oldval = *target;
   *target = [newval retain];
-  [oldval autorelease];
+  [oldval release];
   return oldval;
 }
 
