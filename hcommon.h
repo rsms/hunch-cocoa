@@ -77,6 +77,8 @@
 
 #ifdef __OBJC__
 
+#import <objc/runtime.h>
+
 /*!
  * Atomically replace an Objective-C variable.
  *
@@ -112,6 +114,19 @@ static inline id h_swapid(id *target, id newval) {
   *target = [newval retain];
   [oldval autorelease];
   return oldval;
+}
+
+// "Swizzle" two Objective-C method's implementations
+static inline void hobjc_swizzle(Class cls, SEL origsel, SEL newsel) {
+  Method origMethod = class_getInstanceMethod(cls, origsel);
+  Method newMethod = class_getInstanceMethod(cls, newsel);
+  if (class_addMethod(cls, origsel, method_getImplementation(newMethod),
+                      method_getTypeEncoding(newMethod))) {
+    class_replaceMethod(cls, newsel, method_getImplementation(origMethod),
+                        method_getTypeEncoding(origMethod));
+  } else {
+    method_exchangeImplementations(origMethod, newMethod);
+  }
 }
 
 /*!
