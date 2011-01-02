@@ -27,7 +27,7 @@ static inline BOOL _isBlockType(id obj) {
                 format:@"unexpected block type %@",
                        NSStringFromClass([block class])];
   }
-  block = [block copy];
+  block = Block_copy(block);
 
   // get or create semaphore. There's potential for a race condition here.
   HDSemaphore *sem = objc_getAssociatedObject(self, &gSemaphoreKey);
@@ -81,6 +81,21 @@ static inline BOOL _isBlockType(id obj) {
 
 
 #define _ARGC_MAX 8
+#define _EXEC_BLOCK_VA(block, ...) \
+  ((BOOL(^)(id,id,id,id,id,id,id,id))(block))(__VA_ARGS__)
+
+
+/*- (void)onNext:(NSString*)eventName call:(id)block {
+  __block id self_ = self;
+  __block id block2;
+  dispatch_block_t block1 = Block_copy((dispatch_block_t)block);
+  block2 = ^(id a1, id a2, id a3, id a4, id a5, id a6, id a7, id a8) {
+    _EXEC_BLOCK_VA(block1, a1, a2, a3, a4, a5, a6, a7, a8);
+    Block_release(block1);
+    return YES;
+  };
+  [self addListenerForEvent:eventName usingBlock:block2];
+}*/
 
 
 - (void)emitEvent:(NSString*)name argv:(id*)argv argc:(NSUInteger)argc {
@@ -91,28 +106,35 @@ static inline BOOL _isBlockType(id obj) {
   NSMutableArray *listeners;
   NSMutableDictionary *listenersDict =
       objc_getAssociatedObject(self, &gListenersKey);
-  if (!listenersDict || !(listeners = [listenersDict objectForKey:name])) {
+  if (!listenersDict || !(listeners = [listenersDict objectForKey:name]) ||
+      listeners.count == 0) {
     [sem put];
     return;
   }
+  // we take a shallow snapshot of listeners so that we can release the
+  // semaphore before calling any blocks, which might in turn call some of our
+  // other methods which aquires the semaphore. One use-case is to call
+  // removeListener from within a block. This design is to avoid ending up in a
+  // deadlock state.
+  NSArray *listeners2 = [listeners copy];
+  [sem put];
   // invoke listeners
-  @try {
-    for (id block in listeners) {
-      #if !NDEBUG  // since we might use injected debuggers
-      if (!_isBlockType(block)) continue;
-      #endif
-      ((void(^)(id,id,id,id,id,id,id,id))block)(
-        argc > 0 ? argv[0] : nil,
-        argc > 1 ? argv[1] : nil,
-        argc > 2 ? argv[2] : nil,
-        argc > 3 ? argv[3] : nil,
-        argc > 4 ? argv[4] : nil,
-        argc > 5 ? argv[5] : nil,
-        argc > 6 ? argv[6] : nil,
-        argc > 7 ? argv[7] : nil);
+  for (id block in listeners2) {
+    #if !NDEBUG  // since we might use injected debuggers
+    if (!_isBlockType(block)) continue;
+    #endif
+    BOOL remove = _EXEC_BLOCK_VA(block,
+      argc > 0 ? argv[0] : nil,
+      argc > 1 ? argv[1] : nil,
+      argc > 2 ? argv[2] : nil,
+      argc > 3 ? argv[3] : nil,
+      argc > 4 ? argv[4] : nil,
+      argc > 5 ? argv[5] : nil,
+      argc > 6 ? argv[6] : nil,
+      argc > 7 ? argv[7] : nil);
+    if (remove) {
+      [self removeListener:block];
     }
-  } @finally {
-    [sem put];
   }
 }
 
