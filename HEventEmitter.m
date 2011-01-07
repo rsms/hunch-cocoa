@@ -136,6 +136,7 @@ static inline BOOL _isBlockType(id obj) {
       [self removeListener:block];
     }
   }
+  [listeners2 release];
 }
 
 

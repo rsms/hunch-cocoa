@@ -101,8 +101,7 @@ static void _proc_handle_ev(HDProcess *self) {
 
 
 + (HDProcess*)start:(NSString*)program, ... {
-  HDProcess *proc = [[HDProcess alloc] init];
-  proc.program = program;
+  HDProcess *proc = [self processWithProgram:program];
   va_list valist;
   va_start(valist, program);
   [proc setVariableArguments:valist];

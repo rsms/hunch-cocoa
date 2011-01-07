@@ -618,10 +618,12 @@ static void _write_finalize(HDStream *self) {
   msg.msg_controllen = CMSG_LEN(sizeof(fd));
 
   cmsg = CMSG_FIRSTHDR(&msg);
-  cmsg->cmsg_level = SOL_SOCKET;
-  cmsg->cmsg_type = SCM_RIGHTS;
-  cmsg->cmsg_len = msg.msg_controllen;
-  *(int*)CMSG_DATA(cmsg) = fd;
+  if (cmsg) {
+    cmsg->cmsg_level = SOL_SOCKET;
+    cmsg->cmsg_type = SCM_RIGHTS;
+    cmsg->cmsg_len = msg.msg_controllen;
+    *(int*)CMSG_DATA(cmsg) = fd;
+  }
 
   ssize_t written = sendmsg(fd_, &msg, flags);
 
