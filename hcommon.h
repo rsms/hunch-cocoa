@@ -41,6 +41,7 @@
   #endif
   #define h_atomic_cas(p, o, n)  __sync_bool_compare_and_swap((p), (o), (n))
   #define h_atomic_inc(p)  __sync_add_and_fetch((p), 1)
+  #define h_atomic_inc_and_return_prev(p)  __sync_fetch_and_add((p), 1)
   #define h_atomic_dec(p)  __sync_sub_and_fetch((p), 1)
   #define h_atomic_add(p, v)  __sync_add_and_fetch((p), (v))
   #define h_atomic_sub(p, v)  __sync_sub_and_fetch((p), (v))
