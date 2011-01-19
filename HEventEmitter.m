@@ -149,7 +149,11 @@ static inline BOOL _isBlockType(id obj) {
 
 
 - (void)emitEvent:(NSString*)name argument:(id)argument {
-  [self emitEvent:name argv:(argument ? &argument : nil) argc:0];
+  if (argument) {
+    [self emitEvent:name argv:&argument argc:1];
+  } else {
+    [self emitEvent:name argv:nil argc:0];
+  }
 }
 
 
