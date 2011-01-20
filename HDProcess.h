@@ -14,7 +14,21 @@ typedef void (^HDProcessBlock)(HDProcess *process);
  * Events emitted:
  *
  * - "exit" (HDProcess *self) -- the process exited
- * - "start" (HDProcess *self) -- the process started
+ *
+ * Example:
+ *
+ *    #import "HDProcess.h"
+ *    HDProcess *process = [HDProcess processWithProgram:@"enscript"];
+ *    process.stdout.onData = ^(const void *bytes, size_t length) {
+ *      // do something with stdout data hunk
+ *    };
+ *    process.stderr.onData = ^(const void *bytes, size_t length) {
+ *      // do something with stderr data hunk
+ *    };
+ *    [process on:@"exit", ^(HDProcess *process){
+ *      NSLog(@"exit code: %d", process.exitStatus);
+ *    }];
+ *    [process startWithArguments:@"--foo", @"bar", nil];
  *
  */
 @interface HDProcess : NSObject {
